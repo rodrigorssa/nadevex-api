@@ -1,6 +1,7 @@
 const NaverModel = use('App/Models/Naver');
 const NaverProjectBusiness = use('App/Business/NaverProjectBusiness');
 const {response} = use('App/Factories/Response');
+const {wrapNaverQuery} = use('App/Utils/NaverWrapper');
 const Logger = use('Logger');
 const moment = require('moment-timezone');
 const {defaultAppTimezone} = use('App/Enums/Timezone');
@@ -12,7 +13,11 @@ class NaverBusiness {
   }
   async index() {
     try {
-      const dataFromDB = await NaverModel.query().with('user').with('role').with('projects').fetch();
+      let dataFromDB = await NaverModel.query().with('user')
+          .with('role', (builder) => builder.select('id', 'role'))
+          .with('projects', (builder) => builder.select('id', 'name')).fetch();
+
+      dataFromDB = await wrapNaverQuery(dataFromDB.toJSON());
       this.defaultResponse = this.defaultResponse(dataFromDB);
       return this.defaultResponse;
     } catch (error) {

@@ -38,6 +38,10 @@ class User extends Model {
   naver() {
     return this.hasMany('App/Models/Naver');
   }
+
+  static get hidden() {
+    return ['password'];
+  }
 }
 
 module.exports = User;

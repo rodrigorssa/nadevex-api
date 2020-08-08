@@ -22,11 +22,15 @@ const defaultResponse = {
   versionAPI: versionAPI,
   msg: 'Welcome to Navedex API',
 };
+Route.post('/api/signup', 'UserController.store');
+Route.post('/api/login', 'UserController.store');
+Route.group(() => {
+  Route.resource('/api/navers', 'NaverController');
+  Route.resource('/api/users', 'UserController');
+  Route.get('/api/users/navers/:id', 'UserController.getNavers');
+  Route.resource('/api/projects', 'ProjectController');
+  Route.resource('/api/roles', 'RoleController');
+}).middleware('auth');
 
-Route.resource('/api/navers', 'NaverController');
-Route.resource('/api/users', 'UserController');
-Route.get('/api/users/navers/:id', 'UserController.getNavers');
-Route.resource('/api/projects', 'ProjectController');
-Route.resource('/api/roles', 'RoleController');
 
 Route.any('*', ({response}) => response.badRequest(defaultResponse));
