@@ -1,0 +1,25 @@
+version: "3"
+services:
+  db:
+    container_name: db
+    build:
+      context: "./database"
+    restart: always
+    networks:
+      - navedex
+    ports:
+      - "5432:5432"
+  navedex:
+    build: .
+    restart: always
+    volumes:
+      - ".:/app"
+    networks:
+      - navedex
+    ports:
+      - "3333:3333"
+    depends_on:
+      - db
+networks:
+  navedex:
+    driver: bridge

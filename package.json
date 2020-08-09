@@ -6,8 +6,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
+    "dev": "node server --dev",
     "lint": "eslint --fix . ",
-    "test": "node ace test"
+    "test": "node ace test",
+    "migrations": "node ace migration:run"
   },
   "keywords": [
     "adonisjs",

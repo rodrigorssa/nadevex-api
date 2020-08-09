@@ -1,0 +1,5 @@
+CREATE USER navedex WITH PASSWORD 'senha5';
+
+CREATE DATABASE navedex;
+
+ALTER DATABASE navedex OWNER TO navedex;
