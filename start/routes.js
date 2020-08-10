@@ -23,7 +23,7 @@ const defaultResponse = {
   msg: 'Welcome to Navedex API',
 };
 Route.post('/api/signup', 'UserController.store');
-Route.post('/api/login', 'UserController.store');
+Route.post('/api/login', 'UserController.login');
 Route.group(() => {
   Route.resource('/api/navers', 'NaverController');
   Route.resource('/api/users', 'UserController');
@@ -31,6 +31,5 @@ Route.group(() => {
   Route.resource('/api/projects', 'ProjectController');
   Route.resource('/api/roles', 'RoleController');
 }).middleware('auth');
-
 
 Route.any('*', ({response}) => response.badRequest(defaultResponse));

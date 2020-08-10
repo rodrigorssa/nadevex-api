@@ -17,7 +17,7 @@ class ProjectBusiness {
     }
   }
 
-  async store(request, response, idToUpdate) {
+  async store(request, response, auth, idToUpdate) {
     try {
       const bodyRequest = request.all();
       let createdStatus = 201;
@@ -38,7 +38,7 @@ class ProjectBusiness {
   }
 
   update(request) {
-    return this.store(request, null, request.params.id);
+    return this.store(request, null, null, request.params.id);
   }
 
   async show(request) {

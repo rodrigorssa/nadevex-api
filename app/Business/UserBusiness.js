@@ -17,7 +17,19 @@ class UserBusiness {
     }
   }
 
-  async store(request, response, idToUpdate) {
+  async login(request, response, auth) {
+    try {
+      const {email, password} = request.all();
+      const responseData = await auth.attempt(email, password);
+      this.defaultResponse = this.defaultResponse(responseData);
+      return this.defaultResponse;
+    } catch (error) {
+      Logger.error(error);
+      throw response(error, 400);
+    }
+  }
+
+  async store(request, response, auth, idToUpdate) {
     try {
       const bodyRequest = request.all();
       let createdStatus = 201;
@@ -38,7 +50,7 @@ class UserBusiness {
   }
 
   update(request) {
-    return this.store(request, null, request.params.id);
+    return this.store(request, null, null, request.params.id);
   }
 
   async show(request) {

@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server --dev",
+    "dev": "adonis serve --dev",
     "lint": "eslint --fix . ",
     "test": "node ace test",
     "migrations": "node ace migration:run"

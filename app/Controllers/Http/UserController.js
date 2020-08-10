@@ -7,6 +7,10 @@ class UserController {
     return controller(UserBusiness, 'index', ctx);
   }
 
+  login(ctx) {
+    return controller(UserBusiness, 'login', ctx);
+  }
+
   show(ctx) {
     return controller(UserBusiness, 'show', ctx);
   }

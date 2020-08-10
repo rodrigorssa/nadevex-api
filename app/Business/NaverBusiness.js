@@ -13,9 +13,11 @@ class NaverBusiness {
   }
   async index() {
     try {
-      let dataFromDB = await NaverModel.query().with('user')
+      let dataFromDB = await NaverModel.query()
+          .with('user')
           .with('role', (builder) => builder.select('id', 'role'))
-          .with('projects', (builder) => builder.select('id', 'name')).fetch();
+          .with('projects', (builder) => builder.select('id', 'name'))
+          .fetch();
 
       dataFromDB = await wrapNaverQuery(dataFromDB.toJSON());
       this.defaultResponse = this.defaultResponse(dataFromDB);
@@ -26,8 +28,9 @@ class NaverBusiness {
     }
   }
 
-  async store(request, response, idToUpdate) {
+  async store(request, response, auth, idToUpdate) {
     try {
+      const userId = auth.user.id;
       const bodyRequest = request.all();
       const {projects} = bodyRequest;
       delete bodyRequest.projects;
@@ -38,10 +41,13 @@ class NaverBusiness {
         createdStatus = 200;
         responseData = naverModel;
       }
-      bodyRequest.admission_date = bodyRequest.admission_date || moment().tz(defaultAppTimezone).format('YYYY-MM-DD');
+      bodyRequest.admission_date =
+        bodyRequest.admission_date ||
+        moment().tz(defaultAppTimezone).format('YYYY-MM-DD');
+      bodyRequest.user_id = userId;
       this.naverModel.merge(bodyRequest);
       await this.naverModel.save();
-      await this.naverProjectBusiness.storeNaverProject(this.naverModel.id, projects);
+      await this.naverProjectBusiness.storeNaverProject(userId, projects);
       this.defaultResponse = this.defaultResponse(responseData, createdStatus);
       return this.defaultResponse;
     } catch (error) {
@@ -51,13 +57,17 @@ class NaverBusiness {
   }
 
   update(request) {
-    return this.store(request, null, request.params.id);
+    return this.store(request, null, null, request.params.id);
   }
 
-  async show(request) {
+  async show(request, response, auth) {
     try {
+      const userId = auth.user.id;
       const {id} = request.params;
-      const naver = await NaverModel.find(id);
+      const naver = await NaverModel.query()
+          .where('user_id', userId)
+          .where('id', id)
+          .fetch();
       this.defaultResponse = this.defaultResponse(naver);
       return this.defaultResponse;
     } catch (error) {
