@@ -1,0 +1,33 @@
+/signup:
+  post:
+    tags:
+      - Cadastro
+    description: cadastro na aplicação
+    parameters:
+      - name: payload
+        in: body
+        schema:
+          $ref: '#/definitions/signupRequest'
+    responses:
+      201:
+        schema:
+          $ref: '#/definitions/loginResponse'
+      400:
+        schema:
+          $ref: '#/definitions/defaultError'
+      500:
+        schema:
+          $ref: '#/definitions/defaultError'
+
+definitions:
+  signupRequest:
+    type: object
+    properties:
+      email:
+        type: string,
+        example: "teste@email.com"
+        required: true
+      password:
+        type: string,
+        example: "senha5"
+        required: true

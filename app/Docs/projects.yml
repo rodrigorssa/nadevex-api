@@ -1,0 +1,102 @@
+/projects/:id:
+  put:
+    tags:
+      - Projects
+    description: atualizar projeto
+    parameters:
+      - name: id
+        in: params
+        required: true
+      - name: idUser
+        in: body
+        schema:
+          $ref: '#/definitions/projectRequest'
+    responses:
+      200:
+        schema:
+          $ref: '#/definitions/projectResponse'
+      400:
+        schema:
+          $ref: '#/definitions/defaultError'
+      500:
+        schema:
+          $ref: '#/definitions/defaultError'
+  get:
+    tags:
+      - Projects
+    parameters:
+      - name: id
+        in: params
+        required: true
+    responses:
+      200:
+        schema:
+          $ref: '#/definitions/projectResponse'
+      400:
+        schema:
+          $ref: '#/definitions/defaultError'
+      500:
+        schema:
+          $ref: '#/definitions/defaultError'
+/projects:
+  post:
+    tags:
+      - Projects
+    description: insere projeto
+    parameters:
+      - name: id
+        in: params
+        required: true
+      - name: idUser
+        in: body
+        schema:
+          $ref: '#/definitions/projectRequest'
+    responses:
+      200:
+        schema:
+          $ref: '#/definitions/projectResponse'
+      400:
+        schema:
+          $ref: '#/definitions/defaultError'
+      500:
+        schema:
+          $ref: '#/definitions/defaultError'
+  get:
+    tags:
+      - Projects
+    description: "lista todas os projetos"
+    parameters:
+    responses:
+      200:
+        schema:
+          $ref: '#/definitions/projectResponse'
+      400:
+        schema:
+          $ref: '#/definitions/defaultError'
+      500:
+        schema:
+          $ref: '#/definitions/defaultError'
+
+definitions:
+  projectResponse:
+    type: object
+    properties:
+      name:
+        type: string,
+        example: "projeto legal"
+        required: true
+      created_at:
+        type: string,
+        example: "12-12/1221"
+        required: true
+      updated_at:
+        type: string,
+        example: "12-12/1221"
+        required: true
+  projectRequest:
+    type: object
+    properties:
+      name:
+        type: string,
+        example: "projeto tri"
+        required: true

@@ -1,0 +1,116 @@
+/navers/:id:
+  put:
+    tags:
+      - Navers
+    description: atualizar naver
+    parameters:
+      - name: id
+        in: params
+        required: true
+      - name: idUser
+        in: body
+        schema:
+          $ref: '#/definitions/naverRequest'
+    responses:
+      200:
+        schema:
+          allOf:
+            - $ref: '#/definitions/naverRequest'
+            - $ref: '#/definitions/naverResponse'
+      400:
+        schema:
+          $ref: '#/definitions/defaultError'
+      500:
+        schema:
+          $ref: '#/definitions/defaultError'
+  get:
+    tags:
+      - Navers
+    parameters:
+      - name: id
+        in: params
+        required: true
+    responses:
+      200:
+        schema:
+          allOf:
+            - $ref: '#/definitions/naverRequest'
+            - $ref: '#/definitions/naverResponse'
+      400:
+        schema:
+          $ref: '#/definitions/defaultError'
+      500:
+        schema:
+          $ref: '#/definitions/defaultError'
+/navers:
+  post:
+    tags:
+      - Navers
+    description: insere naver
+    parameters:
+      - name: payload
+        in: body
+        schema:
+          $ref: '#/definitions/naverRequest'
+    responses:
+      200:
+        schema:
+          allOf:
+            - $ref: '#/definitions/naverRequest'
+            - $ref: '#/definitions/naverResponse'
+      400:
+        schema:
+          $ref: '#/definitions/defaultError'
+      500:
+        schema:
+          $ref: '#/definitions/defaultError'
+  get:
+    tags:
+      - Navers
+    description: "lista todas os navers"
+    parameters:
+    responses:
+      200:
+        schema:
+          allOf:
+           - $ref: '#/definitions/naverRequest'
+           - $ref: '#/definitions/naverResponse'
+      400:
+        schema:
+          $ref: '#/definitions/defaultError'
+      500:
+        schema:
+          $ref: '#/definitions/defaultError'
+
+definitions:
+  naverResponse:
+    type: object
+    properties:
+      created_at:
+        type: string,
+        example: "12-12-1221"
+        required: true
+      updated_at:
+        type: string,
+        example: "12-12-1221"
+        required: true
+  naverRequest:
+    type: object
+    properties:
+      job_role:
+        type: number,
+        example: "1"
+        required: true
+      name:
+        type: string,
+        example: "naver legal"
+        required: true
+      birth_date:
+        type: string,
+        example: "12-12-1221"
+        required: true
+      projects:
+        type: array
+        items:
+          type: number
+          example: 1
