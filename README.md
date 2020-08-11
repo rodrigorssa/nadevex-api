@@ -1,28 +1,30 @@
-# Adonis API application
+# Navedex API
 
-This is the boilerplate for creating an API server in AdonisJs, it comes pre-configured with.
+API criada com fins de execução do teste de backend nodejs. Tecnologias utilizadas:
 
-1. Bodyparser
-2. Authentication
-3. CORS
-4. Lucid ORM
-5. Migrations and seeds
+1. Framework adonisjs;
+2. Adonis swagger para documentação;
+3. Docker e Docker compose para criação e orquestração do ambiente;
 
-## Setup
+## Como utilizar
 
-Use the adonis command to install the blueprint
+Para criar os containers node e postgres, criar e configurar a base de dados:
 
 ```bash
-adonis new yardstick --api-only
+docker-compose up
 ```
+Deve ser criado um ambiente todo e configurado com a aplicação em funcionamento.
 
-or manually clone the repo and then run `npm install`.
+### Tabelas do DB
 
-
-### Migrations
-
-Run the following command to run startup migrations.
+Após isso, deve se entrar no container node e executar o comando de criação das tabelas:
 
 ```js
-adonis migration:run
+npm run migrations
 ```
+
+As tabelas deverão ser criadas com sucesso e a aplicação estará pronta para execução!
+
+A documentação se encontra no seguinte endereço:
+
+http://localhost:3333/docs
