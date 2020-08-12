@@ -67,8 +67,17 @@
   get:
     tags:
       - Navers
-    description: "lista todas os navers"
+    description: "lista todas os navers de um usuário logado"
     parameters:
+      - name: name
+        in: query
+        example: 'teste'
+      - name: job_role
+        in: query
+        example: 'dev'
+      - name: admission_date
+        in: query
+        example: '2020-12-12'
     responses:
       200:
         schema:

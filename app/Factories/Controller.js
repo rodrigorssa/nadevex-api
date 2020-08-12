@@ -8,7 +8,11 @@ exports.controller = (
 ) =>
   new BusinessRulesInstance()[method](request, response, auth)
       .then((result) => {
-        response.status(result.statusCode).send(result.json);
+        if (result && result.json) {
+          response.status(result.statusCode).send(result.json);
+        } else {
+          response.noContent();
+        }
       })
       .catch((err) => {
         if (err.statusCode) {

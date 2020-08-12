@@ -25,6 +25,7 @@ module.exports = {
         Bearer: {
           description: 'JWT Authentication',
           name: 'Authorization',
+          in: 'header',
           type: 'apiKey',
         },
       },

@@ -3,6 +3,10 @@ const NaverProjectModel = use('App/Models/Naversproject');
 
 class NaverProject {
   async storeNaverProject(naverId, projects) {
+    await NaverProjectModel
+        .query()
+        .where('naver_id', naverId)
+        .delete();
     for (const project of projects) {
       const naverProjectModel = new NaverProjectModel();
       naverProjectModel.merge({

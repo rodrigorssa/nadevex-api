@@ -1,7 +1,6 @@
 const NaverModel = use('App/Models/Naver');
 const NaverProjectBusiness = use('App/Business/NaverProjectBusiness');
 const {response} = use('App/Factories/Response');
-const {wrapNaverQuery} = use('App/Utils/NaverWrapper');
 const Logger = use('Logger');
 const moment = require('moment-timezone');
 const {defaultAppTimezone} = use('App/Enums/Timezone');
@@ -11,15 +10,12 @@ class NaverBusiness {
     this.naverProjectBusiness = new NaverProjectBusiness();
     this.defaultResponse = response;
   }
-  async index() {
+  async index(request, response, auth) {
     try {
-      let dataFromDB = await NaverModel.query()
-          .with('user')
-          .with('role', (builder) => builder.select('id', 'role'))
-          .with('projects', (builder) => builder.select('id', 'name'))
-          .fetch();
-
-      dataFromDB = await wrapNaverQuery(dataFromDB.toJSON());
+      const dataFromDB = await this.naverModel.indexQueryBuilder(
+          request.get(),
+          auth.user.id,
+      );
       this.defaultResponse = this.defaultResponse(dataFromDB);
       return this.defaultResponse;
     } catch (error) {
@@ -27,7 +23,6 @@ class NaverBusiness {
       throw response(error, 400);
     }
   }
-
   async store(request, response, auth, idToUpdate) {
     try {
       const userId = auth.user.id;
@@ -39,7 +34,7 @@ class NaverBusiness {
       if (idToUpdate) {
         this.naverModel = await NaverModel.findOrFail(idToUpdate);
         createdStatus = 200;
-        responseData = naverModel;
+        responseData = this.naverModel.toJSON();
       }
       bodyRequest.admission_date =
         bodyRequest.admission_date ||
@@ -47,7 +42,7 @@ class NaverBusiness {
       bodyRequest.user_id = userId;
       this.naverModel.merge(bodyRequest);
       await this.naverModel.save();
-      await this.naverProjectBusiness.storeNaverProject(userId, projects);
+      await this.naverProjectBusiness.storeNaverProject(idToUpdate, projects);
       this.defaultResponse = this.defaultResponse(responseData, createdStatus);
       return this.defaultResponse;
     } catch (error) {
@@ -56,18 +51,18 @@ class NaverBusiness {
     }
   }
 
-  update(request) {
-    return this.store(request, null, null, request.params.id);
+  update(request, response, auth) {
+    return this.store(request, response, auth, request.params.id);
   }
 
   async show(request, response, auth) {
     try {
       const userId = auth.user.id;
       const {id} = request.params;
-      const naver = await NaverModel.query()
-          .where('user_id', userId)
-          .where('id', id)
-          .fetch();
+      const [naver] = await this.naverModel.indexQueryBuilder({}, userId, id);
+      if (naver) {
+        naver.projects = await this.naverModel.getProjects(id);
+      }
       this.defaultResponse = this.defaultResponse(naver);
       return this.defaultResponse;
     } catch (error) {
