@@ -29,6 +29,10 @@ A documentação se encontra no seguinte endereço:
 
 http://localhost:3333/docs
 
+Collection do Insomnia:
+
+https://github.com/rodrigorssa/nadevex-api/blob/master/Navedex_Collections.json
+
 Diagrama ER criado para esse desafio:
 
   ![Diagrama Entidade Relacionamento](https://user-images.githubusercontent.com/23741892/90318413-ab99c280-df06-11ea-82cc-7a8e3ce535ff.png)
