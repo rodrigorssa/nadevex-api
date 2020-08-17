@@ -42,7 +42,7 @@ class NaverBusiness {
       bodyRequest.user_id = userId;
       this.naverModel.merge(bodyRequest);
       await this.naverModel.save();
-      await this.naverProjectBusiness.storeNaverProject(idToUpdate, projects);
+      await this.naverProjectBusiness.storeNaverProject(idToUpdate, projects, this.naverModel.id);
       this.defaultResponse = this.defaultResponse(responseData, createdStatus);
       return this.defaultResponse;
     } catch (error) {

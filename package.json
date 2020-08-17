@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "adonis serve --dev",
-    "lint": "eslint --fix . ",
+    "lint": "node ./node_modules/eslint/bin/eslint --fix app start",
     "test": "node ace test",
     "migrations": "node ace migration:run"
   },

@@ -19,7 +19,7 @@ class Naver extends Model {
     ).pivotTable('naversprojects');
   }
   indexQueryBuilder(params, userId, naverId) {
-    let q = `select n.name,n.birth_date,n.admission_date,r.role from navers as n inner join roles as r on n.job_role=r.id where n.user_id=${userId}`;
+    let q = `select n.id,n.name,n.birth_date,n.admission_date,r.role from navers as n inner join roles as r on n.job_role=r.id where n.user_id=${userId}`;
     q += naverId ? `and n.id=${naverId}` : '';
     const paramsProperties = Object.getOwnPropertyNames(params);
     paramsProperties.forEach((property) => {
@@ -33,6 +33,11 @@ class Naver extends Model {
     const q = `select p.name,p.id from projects as p inner join naversprojects as np on np.project_id=p.id where np.naver_id=${naverId}`;
 
     return Database.raw(q).then((result) => result.rows || []).catch( (err) => []);
+  }
+
+  getNaversByProject(id) {
+    const query = `select n.id,n.name,n.birth_date,n.admission_date, r.role as job_role from naversprojects as np join navers as n on np.naver_id=n.id join roles as r on n.job_role=r.id where np.project_id=${id}`;
+    return Database.raw(query).then((result) =>result.rows || []).catch( () => []);
   }
 }
 
